@@ -1,0 +1,6 @@
+<h1>Dashboard</h1>
+<%- include('./partials/messages') %>
+<form action="/logout" method="POST">
+  <%- include('./partials/csrf') %>
+  <button type="submit">Logout</button>
+</form>
