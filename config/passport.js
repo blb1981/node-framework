@@ -3,8 +3,8 @@ const bcrypt = require('bcrypt')
 
 /** @type {typeof import('../models/User').User} */
 const User = require('../models').User
+const { devMode } = require('../config/constants')
 
-const devMode = process.env.NODE_ENV === 'development'
 const genericLoginMessage = 'Invalid credentials'
 
 module.exports = (passport) => {
@@ -19,7 +19,6 @@ module.exports = (passport) => {
               message: devMode ? 'Incorrect email' : genericLoginMessage,
             })
           }
-          console.log('User found in database from passport.js file', user)
 
           const passwordMatch = await bcrypt.compare(password, user.password)
           if (!passwordMatch) {

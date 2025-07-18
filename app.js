@@ -9,11 +9,11 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const { sequelize } = require('./models')
 const { webRoutes } = require('./routes/webRoutes')
 const { flashMiddleware } = require('./middleware/flashMiddleware')
+const { devMode } = require('./config/constants')
 
 const app = express()
 
 const sessionStore = new SequelizeStore({ db: sequelize })
-const devMode = process.env.NODE_ENV === 'development'
 
 // Views/settings
 app.set('view engine', 'ejs')

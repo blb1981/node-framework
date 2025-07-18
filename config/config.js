@@ -1,5 +1,5 @@
 require('dotenv').config({ quiet: true })
-const devMode = process.env.NODE_ENV === 'development'
+const { devMode } = require('./constants')
 
 module.exports = {
   development: {

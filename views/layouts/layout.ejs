@@ -11,13 +11,22 @@
       <a href="/" style="margin-right: auto">Home</a>
       <% if (user) { %>
       <a href="/dashboard">Dashboard</a>
+      <% if (user.role == 'admin') { %>
+      <a href="/admin">Admin Menu</a>
+      <% } %>
+      <span><% if (user) { %>Hi <%= user.firstName %>! <% } %></span>
+      <form action="/logout" method="POST">
+        <%- include('../partials/csrf') %>
+        <button type="submit">Logout</button>
+      </form>
       <% } else { %>
       <a href="/login">Login</a>
       <a href="/register">Register</a>
       <% } %>
     </header>
-    <p><% if (user) { %>Hi <%= user.firstName %>! <% } %></p>
+
     <%- body %>
+
     <footer></footer>
     <script src="/js/main.js"></script>
   </body>

@@ -1,0 +1,29 @@
+<h1>Users</h1>
+<%- include('../../partials/messages') %>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Role</th>
+    <th>Active</th>
+    <th>Toggle</th>
+  </tr>
+
+  <% users.forEach(u => { %>
+
+  <tr>
+    <td><a href="#"><%= u.firstName %> <%= u.lastName %></a></td>
+    <td><%= u.role %></td>
+    <td><%= u.active ? 'Yes': 'No' %></td>
+
+    <td>
+      <form action="/admin/users/status/<%= `${u.id}` %>" method="POST">
+        <%- include('../../partials/csrf') %>
+        <button type="submit" <%= u.id == user.id ? 'disabled' : '' %> >
+          <%= u.active ? 'Disable' : 'Activate' %>
+        </button>
+      </form>
+    </td>
+  </tr>
+
+  <% }) %>
+</table>

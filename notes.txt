@@ -1,0 +1,13 @@
+RESTful controller methods
+
++-----------+-------------------------+--------------------+--------------------------------------+
+| HTTP Verb | URI                     | Controller Method  | Description                          |
++-----------+-------------------------+--------------------+--------------------------------------+
+| GET       | /resource               | index()            | Display a list of the resource       |
+| GET       | /resource/create        | create()           | Show the form to create a resource   |
+| POST      | /resource               | store()            | Store a new resource                 |
+| GET       | /resource/{id}          | show()             | Display a specific resource          |
+| GET       | /resource/{id}/edit     | edit()             | Show the form to edit a resource     |
+| PUT/PATCH | /resource/{id}          | update()           | Update a specific resource           |
+| DELETE    | /resource/{id}          | destroy()          | Delete a specific resource           |
++-----------+-------------------------+--------------------+--------------------------------------+
