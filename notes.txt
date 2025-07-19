@@ -11,3 +11,11 @@ RESTful controller methods
 | PUT/PATCH | /resource/{id}          | update()           | Update a specific resource           |
 | DELETE    | /resource/{id}          | destroy()          | Delete a specific resource           |
 +-----------+-------------------------+--------------------+--------------------------------------+
+
+Scripts
+npm run dev → runs both Express + Vite dev servers
+npm run dev:server → only Express
+npm run dev:client → only Vite
+npm run dev:client:watch → compiles files into the dist folder in watch mode
+npm run build → builds frontend into /public/dist
+--prefix frontend tells npm to run the command in the frontend/ folder.
