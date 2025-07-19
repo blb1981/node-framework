@@ -2,18 +2,15 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
 import './styles.scss'
+// import 'bootstrap'
+// if you want it
 
-import Hello from './components/Hello'
+console.log('Hello from frontend folder')
 
-const el = document.getElementById('hello')
-const footer = document.querySelector('footer')
+// import Hello from './components/Hello'
 
-if (el) {
-  createRoot(el).render(<Hello name={'Brandon'} />)
-}
+// const el = document.getElementById('hello')
 
-if (footer) {
-  createRoot(footer).render(<div>heyyyyy, this is a react component</div>)
-}
-
-console.log('hello!!!!!!')
+// if (el) {
+//   createRoot(el).render(<Hello name={'Brandon'} />)
+// }
