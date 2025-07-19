@@ -4,17 +4,17 @@
   <%- include('../partials/csrf') %>
   <div>
     <label for="firstName">First Name*:</label>
-    <input type="text" name="firstName" id="firstName" autocomplete="off" />
+    <input type="text" name="firstName" id="firstName" autocomplete="off" value="<%= oldInput.firstName %>" />
   </div>
 
   <div>
     <label for="lastName">Last Name:</label>
-    <input type="text" name="lastName" id="lastName" autocomplete="off" />
+    <input type="text" name="lastName" id="lastName" autocomplete="off" value="<%= oldInput.lastName %>" />
   </div>
 
   <div>
     <label for="email">Email*:</label>
-    <input type="email" name="email" id="email" autocomplete="off" />
+    <input type="email" name="email" id="email" autocomplete="off" value="<%= oldInput.email %>" />
   </div>
 
   <div>
@@ -24,12 +24,7 @@
 
   <div>
     <label for="passwordConfirm">Confirm Password*:</label>
-    <input
-      type="password"
-      name="passwordConfirm"
-      id="passwordConfirm"
-      autocomplete="off"
-    />
+    <input type="password" name="passwordConfirm" id="passwordConfirm" autocomplete="off" />
   </div>
 
   <div>

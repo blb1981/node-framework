@@ -1,15 +1,29 @@
 <% if (success.length) { %>
- <p style="color: green"><%= success %></p>
+    <% success.forEach(msg => { %>
+    <p style="color: green"><%= msg %></p>
+    <% }) %>
 <% } %>
 
 <% if (error.length) { %>
- <p style="color: red"><%= error %></p>
+    <% error.forEach(msg => { %>
+    <p style="color: red"><%= msg %></p>
+    <% }) %>
 <% } %>
 
 <% if (info.length) { %>
- <p style="color: blue"><%= info %></p>
+    <% info.forEach(msg => { %>
+    <p style="color: blue"><%= msg %></p>
+    <% }) %>
 <% } %>
 
 <% if (warning.length) { %>
- <p style="color: yellow"><%= success %></p>
+    <% warning.forEach(msg => { %>
+    <p style="color: yellow"><%= msg %></p>
+    <% }) %>
+<% } %>
+
+<% if (errors.length) { %>
+    <% errors.forEach(error => { %>
+    <p style="color: red"><%= error.msg %></p>
+    <% }) %>
 <% } %>

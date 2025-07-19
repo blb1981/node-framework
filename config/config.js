@@ -5,7 +5,7 @@ module.exports = {
   development: {
     dialect: 'sqlite',
     storage: process.env.DB_NAME,
-    logging: devMode && console.log(),
+    logging: devMode && console.log,
   },
   // test: {
   //   username: 'root',

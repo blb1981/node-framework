@@ -11,13 +11,14 @@
   <% users.forEach(u => { %>
 
   <tr>
-    <td><a href="#"><%= u.firstName %> <%= u.lastName %></a></td>
+    <td><a href="/admin/users/<%= u.id %>"><%= u.firstName %> <%= u.lastName %></a></td>
     <td><%= u.role %></td>
     <td><%= u.active ? 'Yes': 'No' %></td>
 
     <td>
-      <form action="/admin/users/status/<%= `${u.id}` %>" method="POST">
+      <form action="/admin/users/status/<%= u.id %>" method="POST">
         <%- include('../../partials/csrf') %>
+        <input type="hidden" name="returnTo" value="<%= req.originalUrl %>">
         <button type="submit" <%= u.id == user.id ? 'disabled' : '' %> >
           <%= u.active ? 'Disable' : 'Activate' %>
         </button>

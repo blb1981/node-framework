@@ -1,19 +1,38 @@
 const passport = require('passport')
+const { validationResult } = require('express-validator')
+const bcrypt = require('bcrypt')
 /** @type {typeof import('../models/User').User} */
 const User = require('../models').User
-const bcrypt = require('bcrypt')
+
+const { asyncHandler } = require('../utils/asyncHandler')
+const { devMode } = require('../config/constants')
 
 const showRegister = (req, res) => {
-  res.render('auth/register')
+  res.render('auth/register', { errors: [], oldInput: {} })
 }
 
-const handleRegister = async (req, res) => {
-  // TODO: Registration validation
+const handleRegister = asyncHandler(async (req, res) => {
   const { firstName, lastName, email, password } = req.body
-  const hashedPassword = await bcrypt.hash(password, 10)
+  const errors = validationResult(req)
 
-  console.log({ firstName, lastName, email, password })
+  if (!errors.isEmpty()) {
+    return res.render('auth/register', {
+      errors: errors.array({ onlyFirstError: true }),
+      oldInput: { firstName, lastName, email },
+    })
+  }
   try {
+    const existingUser = await User.findOne({ where: { email } })
+    if (existingUser) {
+      errors.push({ msg: 'Email is alrady registered' })
+      return res.render('auth/register', {
+        errors: errors.array({ onlyFirstError: true }),
+        oldInput: { firstName, lastName, email },
+      })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
     await User.create({
       firstName,
       lastName,
@@ -23,23 +42,40 @@ const handleRegister = async (req, res) => {
     req.flash('success', 'Account created successfully. Please log in.')
     res.redirect('/login')
   } catch (error) {
-    console.log(error)
-    // TODO: Handle this appropriately. Add to errors array. Render register view with errors.
+    devMode && console.log(error)
     req.flash('error', 'Email may already be taken')
     res.redirect('/register')
   }
-}
+})
 
 const showLogin = (req, res) => {
-  res.render('auth/login')
+  res.render('auth/login', { errors: [] })
 }
 
-const handleLogin = passport.authenticate('local', {
-  successRedirect: '/dashboard',
-  failureRedirect: '/login',
-  failureFlash: true,
-  successFlash: true,
-})
+const handleLogin = (req, res, next) => {
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    req.flash(
+      'error',
+      errors.array({ onlyFirstError: true }).map((e) => e.msg)
+    )
+    return res.redirect('/login')
+  }
+
+  passport.authenticate('local', {
+    successRedirect: '/dashboard',
+    failureRedirect: '/login',
+    failureFlash: true,
+    successFlash: true,
+  })(req, res, next)
+}
+// const handleLogin = passport.authenticate('local', {
+//   successRedirect: '/dashboard',
+//   failureRedirect: '/login',
+//   failureFlash: true,
+//   successFlash: true,
+// })
 
 const handleLogout = (req, res) => {
   req.logout(() => {
