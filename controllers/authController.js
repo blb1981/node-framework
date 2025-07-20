@@ -6,6 +6,7 @@ const User = require('../models').User
 
 const { asyncHandler } = require('../utils/asyncHandler')
 const { devMode } = require('../config/constants')
+const { sendWelcomeEmail } = require('../email')
 
 const showRegister = (req, res) => {
   res.render('auth/register', { errors: [], oldInput: {} })
@@ -33,17 +34,21 @@ const handleRegister = asyncHandler(async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    await User.create({
+    const user = await User.create({
       firstName,
       lastName,
       email,
       password: hashedPassword,
     })
+    await sendWelcomeEmail(user) // TODO: Handle error
+    // When I tried this the first time, it errored out
+    // stating that Email may already be taken, sending it to
+    // the catch block. Needs to be handled better
     req.flash('success', 'Account created successfully. Please log in.')
     res.redirect('/login')
   } catch (error) {
     devMode && console.log(error)
-    req.flash('error', 'Email may already be taken')
+    req.flash('error', 'An error occurred.')
     res.redirect('/register')
   }
 })
@@ -70,12 +75,6 @@ const handleLogin = (req, res, next) => {
     successFlash: true,
   })(req, res, next)
 }
-// const handleLogin = passport.authenticate('local', {
-//   successRedirect: '/dashboard',
-//   failureRedirect: '/login',
-//   failureFlash: true,
-//   successFlash: true,
-// })
 
 const handleLogout = (req, res) => {
   req.logout(() => {

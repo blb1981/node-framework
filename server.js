@@ -11,5 +11,10 @@ app.listen(port, () => {
         `✈️  Express server listening on http://localhost:${port}`
       )
     )
+    console.log(
+      chalk.blueBright(
+        `📨 Mailhog potentially running on http://localhost:8025`
+      )
+    )
   }
 })
