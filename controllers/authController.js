@@ -40,10 +40,8 @@ const handleRegister = asyncHandler(async (req, res) => {
       email,
       password: hashedPassword,
     })
-    await sendWelcomeEmail(user) // TODO: Handle error
-    // When I tried this the first time, it errored out
-    // stating that Email may already be taken, sending it to
-    // the catch block. Needs to be handled better
+    await sendWelcomeEmail(user)
+
     req.flash('success', 'Account created successfully. Please log in.')
     res.redirect('/login')
   } catch (error) {

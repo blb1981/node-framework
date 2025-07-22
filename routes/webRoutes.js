@@ -2,15 +2,19 @@ const express = require('express')
 const router = express.Router()
 
 // Controllers
-const { adminDashboardController } = require('../controllers/adminDashboardController')
+const {
+  adminDashboardController,
+} = require('../controllers/adminDashboardController')
 const { authController } = require('../controllers/authController')
 const { dashboardController } = require('../controllers/dashboardController')
 const { homepageController } = require('../controllers/homepageController')
-const { sessionController } = require('../controllers/sessionController')
+// const { sessionController } = require('../controllers/sessionController')
 const { userController } = require('../controllers/userController')
 
 // Middleware
-const { redirectIfAuthenticated } = require('../middleware/redirectIfAuthenticated')
+const {
+  redirectIfAuthenticated,
+} = require('../middleware/redirectIfAuthenticated')
 const { ensureActiveUser } = require('../middleware/ensureActiveUser')
 const { ensureAdmin } = require('../middleware/ensureAdmin')
 const { ensureAuthenticated } = require('../middleware/ensureAuthenticated')
@@ -18,31 +22,61 @@ const { ensureAuthenticated } = require('../middleware/ensureAuthenticated')
 // Validators
 const { loginValidators } = require('../validators/loginValidators')
 const { registerValidators } = require('../validators/registerValidators')
+const { userValidators } = require('../validators/userValidators')
 
 // Homepage/frontend pages
 router.get('/', homepageController.show)
 
-// Registration/Auth routes
-router.get('/register', redirectIfAuthenticated, authController.showRegister)
-router.post('/register', redirectIfAuthenticated, registerValidators, authController.handleRegister)
-router.get('/login', redirectIfAuthenticated, authController.showLogin)
-router.post('/login', redirectIfAuthenticated, loginValidators, authController.handleLogin)
+// Registration routes
+router
+  .route('/register')
+  .all(redirectIfAuthenticated)
+  .get(authController.showRegister)
+  .post(registerValidators, authController.handleRegister)
+
+// Login routes
+router
+  .route('/login')
+  .all(redirectIfAuthenticated)
+  .get(authController.showLogin)
+  .post(redirectIfAuthenticated, loginValidators, authController.handleLogin)
 
 // Routes that require auth and active accounts
-router.get('/dashboard', ensureAuthenticated, ensureActiveUser, dashboardController.show)
-router.post('/logout', ensureAuthenticated, ensureActiveUser, authController.handleLogout)
-
-// Admin routes
-router.get('/admin', ensureAuthenticated, ensureActiveUser, ensureAdmin, adminDashboardController.show)
-router.get('/admin/users', ensureAuthenticated, ensureActiveUser, ensureAdmin, userController.index)
-router.get('/admin/users/:id', ensureAuthenticated, ensureActiveUser, ensureAdmin, userController.show)
+router.get(
+  '/dashboard',
+  ensureAuthenticated,
+  ensureActiveUser,
+  dashboardController.show
+)
 router.post(
-  '/admin/users/status/:id',
+  '/logout',
+  ensureAuthenticated,
+  ensureActiveUser,
+  authController.handleLogout
+)
+
+// Admin dashboard
+router.get(
+  '/admin',
   ensureAuthenticated,
   ensureActiveUser,
   ensureAdmin,
-  userController.toggleActiveStatus
+  adminDashboardController.show
 )
-router.get('/admin/logged-in-users', ensureAuthenticated, ensureActiveUser, ensureAdmin, sessionController.index)
+
+// User administration
+router.use('/admin/users', ensureAuthenticated, ensureActiveUser, ensureAdmin)
+router.get('/admin/users', userController.index)
+router.get('/admin/users/:id', userController.show)
+router.get('/admin/users/:id/edit', userController.edit)
+router.post('/admin/users/:id/update', userValidators, userController.update)
+
+// router.get(
+//   '/admin/logged-in-users',
+//   ensureAuthenticated,
+//   ensureActiveUser,
+//   ensureAdmin,
+//   sessionController.index
+// )
 
 module.exports = { webRoutes: router }

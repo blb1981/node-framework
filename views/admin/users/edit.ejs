@@ -1,0 +1,75 @@
+<h1>Edit User</h1>
+<%- include('../../partials/messages') %>
+<h3><%= userInfo.firstName %> <%= userInfo.lastName %></h3>
+
+<form action="/admin/users/<%= userInfo.id %>/update" method="POST">
+  <%- include('../../partials/csrf') %>
+
+  <div>
+    <label for="active">Active/Inactive:</label>
+
+    <% if (userInfo.role === 'admin') { %>
+    <input type="hidden" name="active" value="<%= userInfo.active %>" />
+    <input type="checkbox" value="true" <%= userInfo.active ? ' checked ' : ''
+    %>disabled > <% } else { %>
+    <input type="hidden" name="active" value="false" />
+    <input type="checkbox" name="active" value="true" <%= userInfo.active ?
+    ' checked ' : '' %> > <% } %>
+  </div>
+
+  <div>
+    <label for="firstName">First Name</label>
+    <input
+      type="text"
+      name="firstName"
+      value="<%= userInfo.firstName %>"
+      id="firstName"
+    />
+  </div>
+
+  <div>
+    <label for="lastName">Last Name</label>
+    <input
+      type="text"
+      name="lastName"
+      value="<%= userInfo.lastName %>"
+      id="lastName"
+    />
+  </div>
+
+  <div>
+    <label for="email">Email</label>
+    <input type="email" name="email" value="<%= userInfo.email %>" id="email" />
+  </div>
+
+  <div>
+  <label for="role">Role</label>
+  <select name="role" id="role" <%= req.user.id === userInfo.id ? 'disabled' : '' %>>
+    <option value="user" <%= userInfo.role === 'user' ? 'selected' : '' %>>User</option>
+    <option value="admin" <%= userInfo.role === 'admin' ? 'selected' : '' %>>Admin</option>
+  </select>
+
+  <% if (req.user.id === userInfo.id) { %>
+    <input type="hidden" name="role" value="<%= userInfo.role %>">
+  <% } %>
+</div>
+
+  <p>Leave password fields blank if not changing.</p>
+
+  <div>
+    <label for="password">Password*:</label>
+    <input type="password" name="password" id="password" autocomplete="off" />
+  </div>
+
+  <div>
+    <label for="passwordConfirm">Confirm Password*:</label>
+    <input
+      type="password"
+      name="passwordConfirm"
+      id="passwordConfirm"
+      autocomplete="off"
+    />
+  </div>
+
+  <button type="submit">Save</button>
+</form>

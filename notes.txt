@@ -19,3 +19,25 @@ npm run dev:client → only Vite
 npm run dev:client:watch → compiles files into the dist folder in watch mode
 npm run build → builds frontend into /public/dist
 --prefix frontend tells npm to run the command in the frontend/ folder.
+
+Non RESTful options for route naming
+
+| Purpose               | HTTP Verb | Route               | Description                           |
+| --------------------- | --------- | ------------------- | ------------------------------------- |
+| Show all users        | GET       | `/users`            | Render a list of users                |
+| Show a form to create | GET       | `/users/new`        | Render the "new user" form            |
+| Create a user         | POST      | `/users/create`     | Handle form submission to create      |
+| Show one user         | GET       | `/users/:id`        | Render a user profile                 |
+| Show a form to edit   | GET       | `/users/:id/edit`   | Render the "edit user" form           |
+| Update a user         | POST      | `/users/:id/update` | Handle form submission to update user |
+| Delete a user         | POST      | `/users/:id/delete` | Handle delete via form/button         |
+
+
+Other possible SSR routes
+
+| Action                    | Method | Route                       |
+| ------------------------- | ------ | --------------------------- |
+| Toggle activation         | POST   | `/users/:id/toggle-active`  |
+| Reset password            | POST   | `/users/:id/reset-password` |
+| Archive user              | POST   | `/users/:id/archive`        |
+| Mark notification as read | POST   | `/notifications/:id/read`   |

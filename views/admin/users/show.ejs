@@ -8,10 +8,4 @@
 <p><strong>Created:</strong> <%= userInfo.createdAt %></p>
 <p><strong>Updated:</strong> <%= userInfo.updatedAt %></p>
 
-<form action="/admin/users/status/<%= userInfo.id %>" method="POST">
-    <%- include('../../partials/csrf') %>
-    <input type="hidden" name="returnTo" value="<%= req.originalUrl %>">
-    <button type="submit" <%= userInfo.id == user.id ? 'disabled' : '' %> >
-        <%= userInfo.active ? 'Disable' : 'Activate' %>
-    </button>
-</form>
+<p><a href="/admin/users/<%= userInfo.id %>/edit">Edit user</a></p>
