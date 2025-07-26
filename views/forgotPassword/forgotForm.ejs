@@ -1,0 +1,13 @@
+<h2>Forget Your Password?</h2>
+<%- include('../partials/messages') %>
+<form action="/forgot-password" method="post">
+  <%- include('../partials/csrf') %>
+  <div>
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" />
+  </div>
+
+  <div>
+    <button type="submit">Reset Password</button>
+  </div>
+</form>

@@ -15,6 +15,8 @@ const { serverErrorHandler } = require('./middleware/serverErrorHandler')
 
 const { devMode } = require('./config/constants')
 
+// TODO: Add rate limiting to public routes with forms
+
 const app = express()
 const sessionStore = new SequelizeStore({ db: sequelize })
 
@@ -35,7 +37,7 @@ app.use(
     rolling: true,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
-      secure: !devMode && true,
+      secure: 'auto',
     },
   })
 )

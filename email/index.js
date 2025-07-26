@@ -10,4 +10,13 @@ const sendWelcomeEmail = asyncHandler(async (user) => {
   })
 })
 
-module.exports = { sendWelcomeEmail }
+const sendPasswordResetEmail = asyncHandler(async (emailAddress, resetLink) => {
+  return await sendEmail({
+    to: emailAddress,
+    subject: 'Reset your password',
+    templateName: 'forgotPassword',
+    context: { resetLink },
+  })
+})
+
+module.exports = { sendWelcomeEmail, sendPasswordResetEmail }

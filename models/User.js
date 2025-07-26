@@ -46,6 +46,14 @@ const initUser = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: true,
       },
+      passwordResetToken: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      passwordResetTokenExpiry: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     },
     {
       sequelize,

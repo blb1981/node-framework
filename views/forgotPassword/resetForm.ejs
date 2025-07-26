@@ -1,0 +1,17 @@
+<h1>Reset Your Password</h1>
+<%- include('../partials/messages') %>
+<form action="/reset-password" method="post">
+  <%- include('../partials/csrf') %>
+  <input type="hidden" name="token" value="<%= token %>" />
+  <div>
+    <label for="password">New password</label>
+    <input type="password" name="password" id="password" />
+  </div>
+
+  <div>
+    <label for="passwordConfirm">Confirm password</label
+    ><input type="password" name="passwordConfirm" id="passwordConfirm" />
+  </div>
+
+  <div><button type="submit">Reset</button></div>
+</form>
