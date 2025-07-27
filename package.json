@@ -19,6 +19,7 @@
     "db:migration:generate": "sequelize-cli migration:generate --name",
     "db:seed:generate": "sequelize-cli seed:generate --name",
     "db:refresh": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+    "dev:email": "mailhog.exe",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

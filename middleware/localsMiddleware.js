@@ -8,6 +8,9 @@ const localsMiddleware = (req, res, next) => {
   res.locals.errors = []
   res.locals.oldInput = {}
   res.locals.devMode = devMode
+  res.locals.req = req
+  res.locals.user = req.user || null
+  res.locals.csrfToken = req.csrfToken()
   next()
 }
 

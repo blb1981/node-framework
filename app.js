@@ -13,9 +13,8 @@ const { localsMiddleware } = require('./middleware/localsMiddleware')
 const { notFoundHandler } = require('./middleware/notFoundHandler')
 const { serverErrorHandler } = require('./middleware/serverErrorHandler')
 
-const { devMode } = require('./config/constants')
-
 // TODO: Add rate limiting to public routes with forms
+// TODO: Add helmet and CORS middleware
 
 const app = express()
 const sessionStore = new SequelizeStore({ db: sequelize })
@@ -43,9 +42,6 @@ app.use(
 )
 app.use(flash())
 
-// Flash, error, oldInput middleware. Sets empty local variables for templates
-app.use(localsMiddleware)
-
 // Passport setup
 require('./config/passport')(passport)
 app.use(passport.initialize())
@@ -54,30 +50,11 @@ app.use(passport.session())
 // CSRF
 app.use(csrf())
 
-// Make user available in all views
-app.use((req, res, next) => {
-  res.locals.user = req.user || null
-  res.locals.csrfToken = req.csrfToken()
-  next()
-})
-
-app.use((req, res, next) => {
-  console.log(devMode && 'Mode: development')
-  next()
-})
-
-// Expose req.originalUrl to views for redirection after form submission
-app.use((req, res, next) => {
-  res.locals.req = req
-  next()
-})
+// Flash, error, oldInput middleware. Sets empty local variables for templates
+app.use(localsMiddleware)
 
 // Routes
 app.use('/', webRoutes)
-
-app.get('/error-test', (req, res, next) => {
-  throw new Error('Testing 500 errors')
-})
 
 // Error handling
 app.use(notFoundHandler)
